@@ -1,0 +1,1 @@
+nohup java -jar ./app/jira-calc-0.0.1-SNAPSHOT.jar & echo $! > pid.txt
