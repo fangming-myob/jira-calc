@@ -1,2 +1,4 @@
-
-jira-calc.iml
+*.iml
+.idea/*
+target/*
+.DS_Store
