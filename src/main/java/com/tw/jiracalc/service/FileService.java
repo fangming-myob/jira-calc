@@ -6,19 +6,18 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class FileService {
-    private static Long ONE_HOUR = 3600000L;
-    private static String HEADER = "jiraId,Issue Type,Status,Summary,Priority,Assignee,Reporter,Backlog(h),Analysis(h),Selected for Development(h),In-Progress(h),Showcase(h)";
 
     public String generateFile(JiraCards jiraCards) {
 
+        final String tableHeader = "jiraId,Issue Type,Status,Summary,Priority,Assignee,Reporter,Backlog(h),Analysis(h),Selected for Development(h),In-Progress(h),Showcase(h)";
         StringBuffer stringBuffer = new StringBuffer();
-        stringBuffer.append(HEADER);
+        stringBuffer.append(tableHeader);
         stringBuffer.append("\r\n");
 
         jiraCards.getIssues().forEach(jiraCard -> {
             String backlogStr = getLeadTimes(jiraCard, "Backlog");
             String analysis = getLeadTimes(jiraCard, "Analysis");
-            String afd = getLeadTimes(jiraCard, "Selected for Development");
+            String selectedForDevelopment = getLeadTimes(jiraCard, "Selected for Development");
             String inProgress = getLeadTimes(jiraCard, "In-Progress");
             String showcase = getLeadTimes(jiraCard, "Showcase");
             stringBuffer.append(
@@ -31,7 +30,7 @@ public class FileService {
                     .append(jiraCard.getFields().getReporter().getName()).append(",")
                     .append(backlogStr).append(",")
                     .append(analysis).append(",")
-                    .append(afd).append(",")
+                    .append(selectedForDevelopment).append(",")
                     .append(inProgress).append(",")
                     .append(showcase)
                     .append("\r\n");
@@ -44,10 +43,11 @@ public class FileService {
         Long stageTime = jiraCard.getFields().getCycleTimeBean().getCycleTime().get(stageName);
         String leadHours;
         if (null != stageTime) {
-            if (stageTime < ONE_HOUR) {
+            final Long oneHour = 3600000L;
+            if (stageTime < oneHour) {
                 leadHours = "<1";
             } else {
-                leadHours = String.valueOf(stageTime / ONE_HOUR);
+                leadHours = String.valueOf(stageTime / oneHour);
             }
         } else {
             leadHours = "<1";
