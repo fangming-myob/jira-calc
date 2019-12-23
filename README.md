@@ -26,3 +26,5 @@ Please make sure you have installed JVM before starting application.
 ## How to change the result scope?
 Open ./app/jql.txt and change the filter condition
 
+The content is like:
+```jql: project = JUNO AND assignee in (Yunpeng.Ding, Hongxing.Chen, Qilin.Lou, Jingtian.Mo, Jingjun.Zhang, Liang.Cui) ORDER BY priority DESC```

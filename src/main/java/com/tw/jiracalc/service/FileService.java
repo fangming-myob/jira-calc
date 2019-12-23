@@ -6,8 +6,8 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class FileService {
-    private static Long ONE_DAY = 3600000L;
-    private static String HEADER = "jiraId,Issue Type,Status,Summary,Priority,Assignee,Reporter,Backlog(h),Analysis(h),Approved for Development(h),In-Progress(h),Showcase(h)";
+    private static Long ONE_HOUR = 3600000L;
+    private static String HEADER = "jiraId,Issue Type,Status,Summary,Priority,Assignee,Reporter,Backlog(h),Analysis(h),Selected for Development(h),In-Progress(h),Showcase(h)";
 
     public String generateFile(JiraCards jiraCards) {
 
@@ -18,7 +18,7 @@ public class FileService {
         jiraCards.getIssues().forEach(jiraCard -> {
             String backlogStr = getLeadTimes(jiraCard, "Backlog");
             String analysis = getLeadTimes(jiraCard, "Analysis");
-            String afd = getLeadTimes(jiraCard, "Approved for Development");
+            String afd = getLeadTimes(jiraCard, "Selected for Development");
             String inProgress = getLeadTimes(jiraCard, "In-Progress");
             String showcase = getLeadTimes(jiraCard, "Showcase");
             stringBuffer.append(
@@ -41,13 +41,13 @@ public class FileService {
     }
 
     private String getLeadTimes(JiraCard jiraCard, String stageName) {
-        Long stageTime = jiraCard.getFields().getTransitionBean().getCycleTime().get(stageName);
+        Long stageTime = jiraCard.getFields().getCycleTimeBean().getCycleTime().get(stageName);
         String leadHours;
         if (null != stageTime) {
-            if (stageTime < ONE_DAY) {
+            if (stageTime < ONE_HOUR) {
                 leadHours = "<1";
             } else {
-                leadHours = String.valueOf(stageTime / ONE_DAY);
+                leadHours = String.valueOf(stageTime / ONE_HOUR);
             }
         } else {
             leadHours = "<1";

@@ -2,7 +2,10 @@ package com.tw.jiracalc.service;
 
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import com.tw.jiracalc.Constant;
 import com.tw.jiracalc.beans.JiraCards;
+import com.tw.jiracalc.beans.history.HistoryDetail;
+import com.tw.jiracalc.beans.history.JiraCardHistory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -15,8 +18,10 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
 
 import static com.mashape.unirest.http.Unirest.get;
 
@@ -101,5 +106,61 @@ public class JiraService {
         }
 
         return CompletableFuture.completedFuture(cycleTime);
+    }
+
+    @Async
+    public CompletableFuture<Map<String, Long>> getCycleTime(final String jiraId) {
+        Map<String, Long> result = new HashMap<>();
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Accept", MediaType.APPLICATION_JSON_VALUE);
+        headers.set("Authorization", jiraToken);
+
+        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl("https://arlive.atlassian.net/rest/internal/2/issue/"+jiraId+"/activityfeed");
+        HttpEntity<?> entity = new HttpEntity<>(headers);
+        HttpEntity<JiraCardHistory> response = restTemplate.exchange(
+                builder.toUriString(),
+                HttpMethod.GET,
+                entity,
+                JiraCardHistory.class);
+
+        JiraCardHistory jiraCardHistory = response.getBody();
+
+        List<HistoryDetail> activities = jiraCardHistory.getItems().stream()
+                .filter(x -> "status".equals(x.getFieldId()))
+                .collect(Collectors.toList());
+        for (int index = 0; index < activities.size(); index++) {
+            HistoryDetail nextActivity = null;
+            if (index < activities.size() - 1) {
+                nextActivity = activities.get(index + 1);
+            }
+
+            HistoryDetail currentActivity = activities.get(index);
+            Long costHour = result.get(currentActivity.getTo().getDisplayValue());
+
+            if (null == nextActivity) {
+                if (costHour != null) {
+                    costHour += System.currentTimeMillis() - currentActivity.getTimestamp();
+                } else {
+                    costHour = System.currentTimeMillis() - currentActivity.getTimestamp();
+                }
+            } else {
+                if (costHour != null) {
+                    costHour += subtract(nextActivity, currentActivity);
+                } else {
+                    costHour = subtract(nextActivity, currentActivity);
+                }
+            }
+            result.put(currentActivity.getTo().getDisplayValue(), costHour);
+        }
+        result.remove(Constant.DONE);
+        return CompletableFuture.completedFuture(result);
+    }
+
+    private static Long subtract(HistoryDetail left, HistoryDetail right) {
+        return left.getTimestamp() - right.getTimestamp();
+    }
+
+    private static Long msToHour(Long ms) {
+        return ms / 1000 / 60 / 60;
     }
 }

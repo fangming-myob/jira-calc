@@ -3,7 +3,7 @@ package com.tw.jiracalc.beans;
 public class Fields {
     private String summary;
     private Status status;
-    private TransitionBean transitionBean;
+    private CycleTimeBean cycleTimeBean;
     private Assignee assignee;
     private Issuetype issuetype;
     private Priority priority;
@@ -26,12 +26,12 @@ public class Fields {
         this.status = status;
     }
 
-    public TransitionBean getTransitionBean() {
-        return transitionBean;
+    public CycleTimeBean getCycleTimeBean() {
+        return cycleTimeBean;
     }
 
-    public void setTransitionBean(TransitionBean transitionBean) {
-        this.transitionBean = transitionBean;
+    public void setCycleTimeBean(CycleTimeBean cycleTimeBean) {
+        this.cycleTimeBean = cycleTimeBean;
     }
 
     public Assignee getAssignee() {

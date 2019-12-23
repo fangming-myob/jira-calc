@@ -2,7 +2,7 @@ package com.tw.jiracalc.beans;
 
 import java.util.Map;
 
-public class TransitionBean {
+public class CycleTimeBean {
     private Map<String, Long> cycleTime;
 
     public Map<String, Long> getCycleTime() {
