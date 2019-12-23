@@ -1,0 +1,1 @@
+jql: project = JUNO AND assignee in (Yunpeng.Ding, Hongxing.Chen, Qilin.Lou, Jingtian.Mo, Jingjun.Zhang, Liang.Cui) ORDER BY priority DESC
