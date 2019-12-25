@@ -149,7 +149,6 @@ public class JiraService {
             }
             result.put(currentActivity.getTo().getDisplayValue(), costHour);
         }
-        result.remove(Constant.DONE);
         return CompletableFuture.completedFuture(result);
     }
 

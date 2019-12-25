@@ -1,1 +1,1 @@
-curl -X GET localhost:8081/jira/getCardsFile -H "$(cat ./app/jql.txt)" -H "$(cat ./app/token.txt)" > 4-result.csv
+curl -X GET localhost:8081/jira/getCardsFile -H "$(cat ./app/jql.txt)" -H "$(cat ./app/token.txt)" -H "$(cat ./app/stages.txt)" > 4-result.csv

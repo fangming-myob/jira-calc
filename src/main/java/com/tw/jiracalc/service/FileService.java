@@ -4,39 +4,38 @@ import com.tw.jiracalc.beans.JiraCard;
 import com.tw.jiracalc.beans.JiraCards;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class FileService {
 
-    public String generateFile(JiraCards jiraCards) {
+    public String generateFile(JiraCards jiraCards, final List<String> cardStages) {
 
-        final String tableHeader = "jiraId,Issue Type,Status,Summary,Priority,Assignee,Reporter,Backlog(h),Analysis(h),Selected for Development(h),In-Progress(h),Showcase(h)";
-        StringBuffer stringBuffer = new StringBuffer();
-        stringBuffer.append(tableHeader);
-        stringBuffer.append("\r\n");
+        final StringBuffer contentBuffer = new StringBuffer();
+        final StringBuffer stageHeader = new StringBuffer();
+        cardStages.forEach(stage -> stageHeader.append(",").append(stage));
+        final String tableHeader = "jiraId,Issue Type,Status,Summary,Priority,Assignee,Reporter" + stageHeader.toString();
+        contentBuffer.append(tableHeader);
+        contentBuffer.append("\r\n");
 
         jiraCards.getIssues().forEach(jiraCard -> {
-            String backlogStr = getLeadTimes(jiraCard, "Backlog");
-            String analysis = getLeadTimes(jiraCard, "Analysis");
-            String selectedForDevelopment = getLeadTimes(jiraCard, "Selected for Development");
-            String inProgress = getLeadTimes(jiraCard, "In-Progress");
-            String showcase = getLeadTimes(jiraCard, "Showcase");
-            stringBuffer.append(
-                    jiraCard.getKey()).append(",")
+            contentBuffer
+                    .append(jiraCard.getKey()).append(",")
                     .append(jiraCard.getFields().getIssuetype().getName()).append(",")
                     .append(jiraCard.getFields().getStatus().getStatusCategory().getName()).append(",")
                     .append(jiraCard.getFields().getSummary()).append(",")
                     .append(jiraCard.getFields().getPriority().getName()).append(",")
                     .append(jiraCard.getFields().getAssignee().getName()).append(",")
-                    .append(jiraCard.getFields().getReporter().getName()).append(",")
-                    .append(backlogStr).append(",")
-                    .append(analysis).append(",")
-                    .append(selectedForDevelopment).append(",")
-                    .append(inProgress).append(",")
-                    .append(showcase)
-                    .append("\r\n");
+                    .append(jiraCard.getFields().getReporter().getName());
+            cardStages.forEach(stage -> {
+                final String stageCostStr = getLeadTimes(jiraCard, stage);
+                contentBuffer.append(",").append(stageCostStr);
+            });
+            contentBuffer.append("\r\n");
         });
 
-        return stringBuffer.toString();
+        return contentBuffer.toString();
     }
 
     private String getLeadTimes(JiraCard jiraCard, String stageName) {

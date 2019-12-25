@@ -12,10 +12,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+import java.util.stream.Collectors;
 
 @RestController
 public class JiraController {
@@ -33,8 +33,11 @@ public class JiraController {
     byte[] getCardsFile(@RequestHeader Map<String, String> header) {
         final String jiraToken = header.get("jira-token");
         final String jql = header.get("jql");
+        final List<String> cardStages = new ArrayList<>(Arrays.asList(header.get("card-stage").split(",")))
+                .stream().map(String::trim).collect(Collectors.toList());
+
         JiraCards jiraCards = enrichCardDetail(jiraService.getCards(jql, jiraToken), jiraToken);
-        String csv = fileService.generateFile(jiraCards);
+        String csv = fileService.generateFile(jiraCards, cardStages);
         return csv.getBytes();
     }
 
