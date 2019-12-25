@@ -42,6 +42,22 @@ public class FileService {
         Long stageTime = jiraCard.getFields().getCycleTimeBean().getCycleTime().get(stageName);
         String leadHours;
         if (null != stageTime) {
+            if (stageTime < 1) {
+                leadHours = "<1";
+            } else {
+                leadHours = String.valueOf(stageTime);
+            }
+        } else {
+            leadHours = "-";
+        }
+        return leadHours;
+    }
+
+    @Deprecated
+    private String getLeadTimes2(JiraCard jiraCard, String stageName) {
+        Long stageTime = jiraCard.getFields().getCycleTimeBean().getCycleTime().get(stageName);
+        String leadHours;
+        if (null != stageTime) {
             final Long oneDay = 3600000L * 24L;
             if (stageTime < oneDay) {
                 leadHours = "<1";

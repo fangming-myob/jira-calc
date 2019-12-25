@@ -6,6 +6,7 @@ import com.tw.jiracalc.Constant;
 import com.tw.jiracalc.beans.JiraCards;
 import com.tw.jiracalc.beans.history.HistoryDetail;
 import com.tw.jiracalc.beans.history.JiraCardHistory;
+import com.tw.jiracalc.util.TimeTool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -136,9 +137,9 @@ public class JiraService {
 
             if (null == nextActivity) {
                 if (costHour != null) {
-                    costHour += System.currentTimeMillis() - currentActivity.getTimestamp();
+                    costHour += TimeTool.getWorkDay(System.currentTimeMillis(), currentActivity.getTimestamp());
                 } else {
-                    costHour = System.currentTimeMillis() - currentActivity.getTimestamp();
+                    costHour = TimeTool.getWorkDay(System.currentTimeMillis(), currentActivity.getTimestamp());
                 }
             } else {
                 if (costHour != null) {
@@ -153,7 +154,7 @@ public class JiraService {
     }
 
     private static Long subtract(HistoryDetail left, HistoryDetail right) {
-        return left.getTimestamp() - right.getTimestamp();
+        return TimeTool.getWorkDay(left.getTimestamp(), right.getTimestamp());
     }
 
     private static Long msToHour(Long ms) {
