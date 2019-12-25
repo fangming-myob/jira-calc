@@ -31,10 +31,7 @@ public class JiraService {
     @Autowired
     RestTemplate restTemplate;
 
-    @Value("${jira-token}")
-    private String jiraToken;
-
-    public JiraCards getCards(String jql) {
+    public JiraCards getCards(final String jql, final String jiraToken) {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Accept", MediaType.APPLICATION_JSON_VALUE);
         headers.set("Authorization", jiraToken);
@@ -109,7 +106,7 @@ public class JiraService {
     }
 
     @Async
-    public CompletableFuture<Map<String, Long>> getCycleTime(final String jiraId) {
+    public CompletableFuture<Map<String, Long>> getCycleTime(final String jiraId, final String jiraToken) {
         Map<String, Long> result = new HashMap<>();
         HttpHeaders headers = new HttpHeaders();
         headers.set("Accept", MediaType.APPLICATION_JSON_VALUE);

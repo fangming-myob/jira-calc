@@ -31,16 +31,18 @@ public class JiraController {
 
     @GetMapping(value = "/getCardsFile", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     byte[] getCardsFile(@RequestHeader Map<String, String> header) {
-        JiraCards jiraCards = enrichCardDetail(jiraService.getCards(header.get("jql")));
+        final String jiraToken = header.get("jira-token");
+        final String jql = header.get("jql");
+        JiraCards jiraCards = enrichCardDetail(jiraService.getCards(jql, jiraToken), jiraToken);
         String csv = fileService.generateFile(jiraCards);
         return csv.getBytes();
     }
 
-    private JiraCards enrichCardDetail(JiraCards jiraCards) {
+    private JiraCards enrichCardDetail(final JiraCards jiraCards, final String jiraToken) {
         final Map<String, CompletableFuture<Map<String, Long>>> cycleTimeMap = new HashMap<>();
 
         jiraCards.getIssues().forEach(card -> {
-            final CompletableFuture<Map<String, Long>> futureCycleTime = jiraService.getCycleTime(card.getKey());
+            final CompletableFuture<Map<String, Long>> futureCycleTime = jiraService.getCycleTime(card.getKey(), jiraToken);
             cycleTimeMap.put(card.getKey(), futureCycleTime);
         });
 
@@ -63,7 +65,7 @@ public class JiraController {
      * This method based on Jira transition feature
      */
     @Deprecated
-    private JiraCards enrichCardDetail(JiraCards jiraCards, String cloudSessionToken) {
+    private JiraCards enrichCardDetailByTransition(JiraCards jiraCards, String cloudSessionToken) {
         final Map<String, CompletableFuture<Map<String, Long>>> transitionMap = new HashMap<>();
 
         jiraCards.getIssues().forEach(card -> {

@@ -1,0 +1,1 @@
+jira-token: Get Token from https://id.atlassian.com/manage/api-tokens
