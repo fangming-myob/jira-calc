@@ -43,14 +43,14 @@ public class FileService {
         Long stageTime = jiraCard.getFields().getCycleTimeBean().getCycleTime().get(stageName);
         String leadHours;
         if (null != stageTime) {
-            final Long oneHour = 3600000L;
-            if (stageTime < oneHour) {
+            final Long oneDay = 3600000L * 24L;
+            if (stageTime < oneDay) {
                 leadHours = "<1";
             } else {
-                leadHours = String.valueOf(stageTime / oneHour);
+                leadHours = String.valueOf(stageTime / oneDay);
             }
         } else {
-            leadHours = "<1";
+            leadHours = "-";
         }
         return leadHours;
     }
