@@ -2,6 +2,14 @@
 This is a tool to generate Jira Cycle Time report
 
 ## How to use this tool?
+
+Open ```app``` folder and fill in the ```jql``` and ```token``` file, you can get your token at [here](https://id.atlassian.com/manage/api-tokens).
+Then copy the token into token.txt with the format like:
+```
+jira-token: Paste-Your-Token-Here
+```
+
+
 Start application:
 ```
 sh 1-startApp.sh
