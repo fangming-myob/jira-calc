@@ -24,7 +24,7 @@ public class FileService {
                     .append(jiraCard.getKey()).append(",")
                     .append(jiraCard.getFields().getIssuetype().getName()).append(",")
                     .append(jiraCard.getFields().getStatus().getStatusCategory().getName()).append(",")
-                    .append(jiraCard.getFields().getSummary()).append(",")
+                    .append(jiraCard.getFields().getSummary().replaceAll(",", " ")).append(",")
                     .append(jiraCard.getFields().getPriority().getName()).append(",")
                     .append(jiraCard.getFields().getAssignee().getName()).append(",")
                     .append(jiraCard.getFields().getReporter().getName());
