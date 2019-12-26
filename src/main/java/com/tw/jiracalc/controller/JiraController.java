@@ -42,15 +42,15 @@ public class JiraController {
     }
 
     private JiraCards enrichCardDetail(final JiraCards jiraCards, final String jiraToken) {
-        final Map<String, CompletableFuture<Map<String, Long>>> cycleTimeMap = new HashMap<>();
+        final Map<String, CompletableFuture<Map<String, Float>>> cycleTimeMap = new HashMap<>();
 
         jiraCards.getIssues().forEach(card -> {
-            final CompletableFuture<Map<String, Long>> futureCycleTime = jiraService.getCycleTime(card.getKey(), jiraToken);
+            final CompletableFuture<Map<String, Float>> futureCycleTime = jiraService.getCycleTime(card.getKey(), jiraToken);
             cycleTimeMap.put(card.getKey(), futureCycleTime);
         });
 
         jiraCards.getIssues().forEach(card -> {
-            Map<String, Long> cycleTime = null;
+            Map<String, Float> cycleTime = null;
             try {
                 cycleTime = cycleTimeMap.get(card.getKey()).get();
             } catch (InterruptedException | ExecutionException e) {
@@ -67,32 +67,32 @@ public class JiraController {
     /**
      * This method based on Jira transition feature
      */
-    @Deprecated
-    private JiraCards enrichCardDetailByTransition(JiraCards jiraCards, String cloudSessionToken) {
-        final Map<String, CompletableFuture<Map<String, Long>>> transitionMap = new HashMap<>();
-
-        jiraCards.getIssues().forEach(card -> {
-            try {
-                final CompletableFuture<Map<String, Long>> futureTransition = jiraService.getTransition(cloudSessionToken,
-                        card.getKey());
-                transitionMap.put(card.getKey(), futureTransition);
-            } catch (UnirestException e) {
-                e.printStackTrace();
-            }
-        });
-
-        jiraCards.getIssues().forEach(card -> {
-            Map<String, Long> cycleTime = null;
-            try {
-                cycleTime = transitionMap.get(card.getKey()).get();
-            } catch (InterruptedException | ExecutionException e) {
-                e.printStackTrace();
-            }
-            CycleTimeBean cycleTimeBean = new CycleTimeBean();
-            cycleTimeBean.setCycleTime(cycleTime);
-            card.getFields().setCycleTimeBean(cycleTimeBean);
-        });
-
-        return jiraCards;
-    }
+//    @Deprecated
+//    private JiraCards enrichCardDetailByTransition(JiraCards jiraCards, String cloudSessionToken) {
+//        final Map<String, CompletableFuture<Map<String, Float>>> transitionMap = new HashMap<>();
+//
+//        jiraCards.getIssues().forEach(card -> {
+//            try {
+//                final CompletableFuture<Map<String, Float>> futureTransition = jiraService.getTransition(cloudSessionToken,
+//                        card.getKey());
+//                transitionMap.put(card.getKey(), futureTransition);
+//            } catch (UnirestException e) {
+//                e.printStackTrace();
+//            }
+//        });
+//
+//        jiraCards.getIssues().forEach(card -> {
+//            Map<String, Float> cycleTime = null;
+//            try {
+//                cycleTime = transitionMap.get(card.getKey()).get();
+//            } catch (InterruptedException | ExecutionException e) {
+//                e.printStackTrace();
+//            }
+//            CycleTimeBean cycleTimeBean = new CycleTimeBean();
+//            cycleTimeBean.setCycleTime(cycleTime);
+//            card.getFields().setCycleTimeBean(cycleTimeBean);
+//        });
+//
+//        return jiraCards;
+//    }
 }

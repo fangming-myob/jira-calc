@@ -107,8 +107,8 @@ public class JiraService {
     }
 
     @Async
-    public CompletableFuture<Map<String, Long>> getCycleTime(final String jiraId, final String jiraToken) {
-        Map<String, Long> result = new HashMap<>();
+    public CompletableFuture<Map<String, Float>> getCycleTime(final String jiraId, final String jiraToken) {
+        Map<String, Float> result = new HashMap<>();
         HttpHeaders headers = new HttpHeaders();
         headers.set("Accept", MediaType.APPLICATION_JSON_VALUE);
         headers.set("Authorization", jiraToken);
@@ -133,31 +133,23 @@ public class JiraService {
             }
 
             HistoryDetail currentActivity = activities.get(index);
-            Long costHour = result.get(currentActivity.getTo().getDisplayValue());
+            Float costHour = result.get(currentActivity.getTo().getDisplayValue());
 
             if (null == nextActivity) {
                 if (costHour != null) {
-                    costHour += TimeTool.getWorkDay(System.currentTimeMillis(), currentActivity.getTimestamp());
+                    costHour += TimeTool.getWorkDay(currentActivity.getTimestamp(), System.currentTimeMillis());
                 } else {
-                    costHour = TimeTool.getWorkDay(System.currentTimeMillis(), currentActivity.getTimestamp());
+                    costHour = TimeTool.getWorkDay(currentActivity.getTimestamp(), System.currentTimeMillis());
                 }
             } else {
                 if (costHour != null) {
-                    costHour += subtract(nextActivity, currentActivity);
+                    costHour += TimeTool.getWorkDay(currentActivity.getTimestamp(), nextActivity.getTimestamp());
                 } else {
-                    costHour = subtract(nextActivity, currentActivity);
+                    costHour = TimeTool.getWorkDay(currentActivity.getTimestamp(), nextActivity.getTimestamp());
                 }
             }
             result.put(currentActivity.getTo().getDisplayValue(), costHour);
         }
         return CompletableFuture.completedFuture(result);
-    }
-
-    private static Long subtract(HistoryDetail left, HistoryDetail right) {
-        return TimeTool.getWorkDay(left.getTimestamp(), right.getTimestamp());
-    }
-
-    private static Long msToHour(Long ms) {
-        return ms / 1000 / 60 / 60;
     }
 }
