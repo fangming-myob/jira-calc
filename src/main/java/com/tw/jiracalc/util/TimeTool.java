@@ -17,14 +17,14 @@ public class TimeTool {
             return (float) Math.round(workingTime * 100) / 100;
         }
 
-        int dayOfWeek = start.get(Calendar.DAY_OF_WEEK);
+        int whichDayIsStartDay = start.get(Calendar.DAY_OF_WEEK);
         long weekGap = dayGap / 7;
 
         long weekends = weekGap * 2;
-        long yushu = dayGap % 7;
+        long weeks = dayGap % 7;
 
-        if (dayOfWeek + yushu > 7) weekends = weekends + 2;
-        if (dayOfWeek + yushu == 7) weekends++;
+        if (whichDayIsStartDay + weeks > 7) weekends = weekends + 2;
+        if (whichDayIsStartDay + weeks == 7) weekends++;
 
         return (float) (dayGap - weekends);
     }
