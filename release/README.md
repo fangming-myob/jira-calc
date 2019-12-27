@@ -3,26 +3,42 @@ This is a tool to generate Jira Cycle Time report
 
 ## How to use this tool?
 
-Open ```app``` folder and fill in the ```jql``` and ```token``` file, you can get your token at [here](https://id.atlassian.com/manage/api-tokens).
-Then copy the token into token.txt with the format like:
-```
-jira-token: Paste-Your-Token-Here
-```
+### Get Token
+
+1. Generate ```jira API token``` at [here](https://id.atlassian.com/manage/api-tokens).
+2. Get Jira Token. Once getting ```Jira API token```, generate jira-token by executing
+    ```
+    curl -v https://arlive.atlassian.net/ --user [Your-Email]:[Jira-API-Token]
+    ```
+    The Jira Token looked like ```Basic cWlsaW...```
+
+    Then copy the token into token.txt with the format like:
+    ```
+    jira-token: Paste-Your-Token-Here
+    ```
+
+### Config JQL
+
+Update ```.app/jql.txt``` file to satisfy your team.
+
+### Config Stages
+
+Update ```.app/stages.txt``` file to satisfy your team.
 
 
-Start application:
+### Start application:
 ```
 sh 1-startApp.sh
 ```
 
-Get report, please be awared this step takes time and relies on how many stories/cards you will get:
+### Get report:
 ```
 sh 2-getJiraReport.sh
 ```
 
 Then you can get the report which named **currentTimestamp**.csv
 
-Finally you should stop the application by performing:
+### Stop the application:
 ```
 sh 3-stopApp.sh
 ```
@@ -54,4 +70,15 @@ jql: (assignee in (Jianing.Zheng, Minghao.Tan, Jie.Chen, Yingjuan.Wang, pei.wang
 #### Stages:
 ```
 card-stage: Backlog, Ready for Dev, In-Progress, Waiting (other dependancy), Complete
+```
+
+### YiLong
+#### JQL:
+```
+jql: (assignee in (siyu.gou, sebastian.thiel, ke.liu,Hanxian.Lin,nan.li,junli.li,lin.fang) OR assignee was in (sebastian.thiel, ke.liu,Hanxian.Lin,nan.li,junli.li,lin.fang)) ORDER BY priority DESC
+```
+
+#### Stages:
+```
+card-stage: To Do, In Progress, TEST, Ready For Release, Done
 ```
