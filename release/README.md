@@ -10,11 +10,11 @@ This is a tool to generate Jira Cycle Time report
     ```
     curl -v https://arlive.atlassian.net/ --user [Your-Email]:[Jira-API-Token]
     ```
-    The Jira Token looked like ```Basic cWlsaW...```
+    The Jira Token looks like ```Basic cWlsaW...```
 
-    Then copy the token into token.txt with the format like:
+    Then copy the token into ```.app/token.txt``` with the format like:
     ```
-    jira-token: Paste-Your-Token-Here
+    jira-token: [Paste-Your-Token-Here]
     ```
 
 ### Config JQL
