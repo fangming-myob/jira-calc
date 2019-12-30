@@ -2,13 +2,11 @@ package com.tw.jiracalc.service;
 
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.exceptions.UnirestException;
-import com.tw.jiracalc.Constant;
 import com.tw.jiracalc.beans.JiraCards;
 import com.tw.jiracalc.beans.history.HistoryDetail;
 import com.tw.jiracalc.beans.history.JiraCardHistory;
 import com.tw.jiracalc.util.TimeTool;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -107,8 +105,14 @@ public class JiraService {
     }
 
     @Async
-    public CompletableFuture<Map<String, Float>> getCycleTime(final String jiraId, final String jiraToken) {
+    public CompletableFuture<Map<String, Double>> getCycleTime(final String jiraId, final String jiraToken) {
+        Map<String, Double> result = getCardCycleTime(jiraId, jiraToken);
+        return CompletableFuture.completedFuture(result);
+    }
+
+    public Map<String, Double> getCardCycleTime(final String jiraId, final String jiraToken) {
         Map<String, Float> result = new HashMap<>();
+        Map<String, Double> finalResult = new HashMap<>();
         HttpHeaders headers = new HttpHeaders();
         headers.set("Accept", MediaType.APPLICATION_JSON_VALUE);
         headers.set("Authorization", jiraToken);
@@ -150,6 +154,9 @@ public class JiraService {
             }
             result.put(currentActivity.getTo().getDisplayValue(), costHour);
         }
-        return CompletableFuture.completedFuture(result);
+
+        result.forEach((key, value) -> finalResult.put(key, TimeTool.roundUp(value, 1)));
+
+        return finalResult;
     }
 }

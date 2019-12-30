@@ -10,22 +10,25 @@ public class TimeTool {
         end.setTimeInMillis(endMillis);
 
         long day = 86400000;
-        long dayGap = (end.getTimeInMillis() - start.getTimeInMillis()) / day;
+        float dayGap = (float) (endMillis - startMillis) / day;
 
         if (dayGap < 1) {
-            float workingTime = (float) (endMillis - startMillis) / day;
-            return (float) Math.round(workingTime * 100) / 100;
+            return dayGap;
         }
 
         int whichDayIsStartDay = start.get(Calendar.DAY_OF_WEEK);
-        long weekGap = dayGap / 7;
-
-        long weekends = weekGap * 2;
-        long weeks = dayGap % 7;
+        int weekGap = (int) (dayGap / 7);
+        int weekends = weekGap * 2;
+        int weeks = (int) (dayGap % 7);
 
         if (whichDayIsStartDay + weeks > 7) weekends = weekends + 2;
         if (whichDayIsStartDay + weeks == 7) weekends++;
 
-        return (float) (dayGap - weekends);
+        return dayGap - weekends;
+    }
+
+    public static Double roundUp(final float data, int decimal) {
+        double reserved = Math.pow(10, decimal);
+        return Math.round(data * reserved) / reserved;
     }
 }

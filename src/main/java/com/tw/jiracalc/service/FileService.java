@@ -5,7 +5,6 @@ import com.tw.jiracalc.beans.JiraCards;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class FileService {
@@ -39,7 +38,7 @@ public class FileService {
     }
 
     private String getLeadTimes(JiraCard jiraCard, String stageName) {
-        Float stageTime = jiraCard.getFields().getCycleTimeBean().getCycleTime().get(stageName);
+        Double stageTime = jiraCard.getFields().getCycleTimeBean().getCycleTime().get(stageName);
         String leadHours;
         if (null != stageTime) {
             leadHours = String.valueOf(stageTime);

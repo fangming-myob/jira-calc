@@ -1,6 +1,5 @@
 package com.tw.jiracalc.controller;
 
-import com.mashape.unirest.http.exceptions.UnirestException;
 import com.tw.jiracalc.beans.CycleTimeBean;
 import com.tw.jiracalc.beans.JiraCards;
 import com.tw.jiracalc.service.FileService;
@@ -29,6 +28,13 @@ public class JiraController {
     @Value("${cloud-session-token}")
     private String cloudSessionToken;
 
+    @GetMapping(value = "/cardCycleTime")
+    Map<String, Double> getCardCycleTime(@RequestHeader Map<String, String> header) {
+        final String jiraToken = header.get("jira-token");
+        final String jiraId = header.get("jira-id");
+        return jiraService.getCardCycleTime(jiraId, jiraToken);
+    }
+
     @GetMapping(value = "/getCardsFile", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     byte[] getCardsFile(@RequestHeader Map<String, String> header) {
         final String jiraToken = header.get("jira-token");
@@ -42,15 +48,15 @@ public class JiraController {
     }
 
     private JiraCards enrichCardDetail(final JiraCards jiraCards, final String jiraToken) {
-        final Map<String, CompletableFuture<Map<String, Float>>> cycleTimeMap = new HashMap<>();
+        final Map<String, CompletableFuture<Map<String, Double>>> cycleTimeMap = new HashMap<>();
 
         jiraCards.getIssues().forEach(card -> {
-            final CompletableFuture<Map<String, Float>> futureCycleTime = jiraService.getCycleTime(card.getKey(), jiraToken);
+            final CompletableFuture<Map<String, Double>> futureCycleTime = jiraService.getCycleTime(card.getKey(), jiraToken);
             cycleTimeMap.put(card.getKey(), futureCycleTime);
         });
 
         jiraCards.getIssues().forEach(card -> {
-            Map<String, Float> cycleTime = null;
+            Map<String, Double> cycleTime = null;
             try {
                 cycleTime = cycleTimeMap.get(card.getKey()).get();
             } catch (InterruptedException | ExecutionException e) {
