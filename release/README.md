@@ -53,12 +53,14 @@ Open ./app/jql.txt and change the filter condition
 ### TianZhou
 #### JQL:
 ```
-jql: (assignee in (Liang.Cui, Jingjun.Zhang, Qilin.Lou, Jingtian.Mo, Hongxing.Chen, Yunpeng.Ding) OR assignee was in (Liang.Cui, Jingjun.Zhang, Qilin.Lou, Jingtian.Mo, Hongxing.Chen, Yunpeng.Ding)) AND status changed to done before now() after -30d  ORDER BY priority DESC
+jql: project = JUNO AND (assignee in (Liang.Cui, Jingjun.Zhang, Qilin.Lou, Jingtian.Mo, Hongxing.Chen, Yunpeng.Ding) OR assignee was in (Liang.Cui, Jingjun.Zhang, Qilin.Lou, Jingtian.Mo, Hongxing.Chen, Yunpeng.Ding)) AND status changed to done before now() after -30d  ORDER BY priority DESC
+jql: project = tianzhou AND (assignee in (Liang.Cui, Jingjun.Zhang, Qilin.Lou, Jingtian.Mo, Hongxing.Chen, Yunpeng.Ding) OR assignee was in (Liang.Cui, Jingjun.Zhang, Qilin.Lou, Jingtian.Mo, Hongxing.Chen, Yunpeng.Ding)) ORDER BY priority DESC
 ```
 
 #### Stages:
 ```
 card-stage: Backlog, Analysis, Selected for Development, In-Progress, Showcase, Done
+card-stage: READY FOR DEV, In Progress, Blocked, Showcase, Done
 ```
 
 ### ShenZhou
