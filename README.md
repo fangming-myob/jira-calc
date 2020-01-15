@@ -12,18 +12,18 @@ This is a tool to generate Jira Cycle Time report
     ```
     The Jira Token looks like ```Basic cWlsaW...```
 
-    Then copy the token into ```.app/token.txt``` with the format like:
+    Then copy the token into ```.env/token.txt``` with the format like:
     ```
     jira-token: [Paste-Your-Token-Here]
     ```
 
 ### Config JQL
 
-Update ```.app/jql.txt``` file to satisfy your team.
+Update ```.env/jql.txt``` file to satisfy your team.
 
 ### Config Stages
 
-Update ```.app/stages.txt``` file to satisfy your team.
+Update ```.env/stages.txt``` file to satisfy your team.
 
 ### Get report:
 ```
@@ -37,7 +37,7 @@ Then you can get the report which named **currentTimestamp**.csv
 Please make sure you have installed JVM before starting application.
 
 ## How to change the result scope?
-Open ./app/jql.txt and change the filter condition
+Open ./env/jql.txt and change the filter condition
 
 ### TianZhou
 #### JQL:
