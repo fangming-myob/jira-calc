@@ -40,17 +40,25 @@ Please make sure you have installed JVM before starting application.
 Open ./env/jql.txt and change the filter condition
 
 ### TianZhou
-#### JQL:
+#### JQL (Juno):
 ```
 jql: project = JUNO AND (assignee in (Liang.Cui, Jingjun.Zhang, Qilin.Lou, Jingtian.Mo, Hongxing.Chen, Yunpeng.Ding) OR assignee was in (Liang.Cui, Jingjun.Zhang, Qilin.Lou, Jingtian.Mo, Hongxing.Chen, Yunpeng.Ding)) AND status changed to done before now() after -30d  ORDER BY priority DESC
+```
+
+#### Stages (Juno):
+```
+card-stage: Backlog, Analysis, Selected for Development, In-Progress, Showcase, Done
+```
+
+#### JQL (Tianzhou):
+```
 jql: project = tianzhou AND (assignee in (Liang.Cui, Jingjun.Zhang, Qilin.Lou, Jingtian.Mo, Hongxing.Chen, Yunpeng.Ding) OR assignee was in (Liang.Cui, Jingjun.Zhang, Qilin.Lou, Jingtian.Mo, Hongxing.Chen, Yunpeng.Ding)) ORDER BY priority DESC
 ```
 
-#### Stages:
+#### Stages (Tianzhou):
 ```
-card-stage: Backlog, Analysis, Selected for Development, In-Progress, Showcase, Done
 card-stage: READY FOR DEV, In Progress, Blocked, Showcase, Done
-```__
+```
 
 ### ShenZhou
 #### JQL:
