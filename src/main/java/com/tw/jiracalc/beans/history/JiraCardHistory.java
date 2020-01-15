@@ -1,15 +1,11 @@
 package com.tw.jiracalc.beans.history;
 
+import lombok.Data;
+
 import java.util.List;
 
+@Data
 public class JiraCardHistory {
     List<HistoryDetail> items;
 
-    public List<HistoryDetail> getItems() {
-        return items;
-    }
-
-    public void setItems(List<HistoryDetail> items) {
-        this.items = items;
-    }
 }

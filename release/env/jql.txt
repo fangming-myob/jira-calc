@@ -1,0 +1,1 @@
+jql: project = tianzhou AND (assignee in (Liang.Cui, Jingjun.Zhang, Qilin.Lou, Jingtian.Mo, Hongxing.Chen, Yunpeng.Ding) OR assignee was in (Liang.Cui, Jingjun.Zhang, Qilin.Lou, Jingtian.Mo, Hongxing.Chen, Yunpeng.Ding)) ORDER BY priority DESC

@@ -1,1 +1,0 @@
-jql: (assignee in (Jianing.Zheng, Minghao.Tan, Jie.Chen, Yingjuan.Wang, pei.wang2) OR assignee was in (Jianing.Zheng, Minghao.Tan, Jie.Chen, Yingjuan.Wang, pei.wang2)) AND status changed to Complete before now() after -30d  ORDER BY priority DESC
