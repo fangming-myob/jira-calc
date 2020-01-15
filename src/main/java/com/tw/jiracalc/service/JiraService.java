@@ -45,7 +45,7 @@ public class JiraService {
 
     @Async
     public CompletableFuture<Map<String, Double>> getCycleTime(final String jiraId, final String jiraToken) {
-        Map<String, Float> result = new HashMap<>();
+        Map<String, Double> result = new HashMap<>();
         Map<String, Double> finalResult = new HashMap<>();
         HttpHeaders headers = new HttpHeaders();
         headers.set("Accept", MediaType.APPLICATION_JSON_VALUE);
@@ -67,7 +67,7 @@ public class JiraService {
             }
 
             HistoryDetail currentActivity = activities.get(index);
-            Float costHour = result.get(currentActivity.getTo().getDisplayValue());
+            Double costHour = result.get(currentActivity.getTo().getDisplayValue());
 
             if (null == nextActivity) {
                 if (costHour != null) {

@@ -1,19 +1,21 @@
 package com.tw.jiracalc.util;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Calendar;
 
 public class TimeTool {
-    public static Float getWorkDay(final long startMillis, final long endMillis) {
+    public static double getWorkDay(final long startMillis, final long endMillis) {
         Calendar start = Calendar.getInstance();
         start.setTimeInMillis(startMillis);
         Calendar end = Calendar.getInstance();
         end.setTimeInMillis(endMillis);
 
         long day = 86400000;
-        float dayGap = (float) (endMillis - startMillis) / day;
+        double dayGap = (double) (endMillis - startMillis) / day;
 
         if (dayGap < 1) {
-            return dayGap;
+            return roundUp(dayGap, 2);
         }
 
         int whichDayIsStartDay = start.get(Calendar.DAY_OF_WEEK);
@@ -24,11 +26,11 @@ public class TimeTool {
         if (whichDayIsStartDay + weeks > 7) weekends = weekends + 2;
         if (whichDayIsStartDay + weeks == 7) weekends++;
 
-        return dayGap - weekends;
+        return roundUp(dayGap - weekends, 2);
     }
 
-    public static Double roundUp(final float data, int decimal) {
-        double reserved = Math.pow(10, decimal);
-        return Math.round(data * reserved) / reserved;
+    public static Double roundUp(final double data, int decimal) {
+        BigDecimal bg = new BigDecimal(data).setScale(decimal, RoundingMode.HALF_UP);
+        return bg.doubleValue();
     }
 }
