@@ -3,6 +3,10 @@ This is a tool to generate Jira Cycle Time report
 
 ## How to use this tool?
 
+### Generate package
+
+Run command ```mvn clean install```, the jar file will be generated and copied to /release folder.
+
 ### Get Token
 
 1. Generate ```jira API token``` at [here](https://id.atlassian.com/manage/api-tokens).
