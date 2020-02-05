@@ -31,7 +31,14 @@ Update ```.env/stages.txt``` file to satisfy your team.
 
 ### Get report:
 ```
+## Start app
+sh 1-startApp.sh
+
+## Get report
 sh 2-getJiraReport.sh
+
+## Stop app
+3-stopApp.sh
 ```
 
 Then you can get the report which named **currentTimestamp**.csv
