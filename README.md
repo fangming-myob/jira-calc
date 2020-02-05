@@ -25,7 +25,7 @@ Run command ```mvn clean install```, the jar file will be generated and copied t
 
 Update ```.env/jql.txt``` file to satisfy your team.
 
-### Config Stages
+### Config Stages(Make sure use the correct stage, you can debug from network in jira to get the exactly value)
 
 Update ```.env/stages.txt``` file to satisfy your team.
 
@@ -38,7 +38,7 @@ Then you can get the report which named **currentTimestamp**.csv
 
 # Advance
 ## Precondition
-Please make sure you have installed JVM before starting application.
+Please make sure you have installed JVM before starting the application.
 
 ## How to change the result scope?
 Open ./env/jql.txt and change the filter condition
