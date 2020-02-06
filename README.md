@@ -1,7 +1,8 @@
+[![Build Status](https://travis-ci.org/PhonyLou/jira-calc.svg?branch=master)](https://travis-ci.org/PhonyLou/jira-calc)
+
 ## What's this?
 This is a tool to generate Jira Cycle Time report
 
-[![Build Status](https://travis-ci.org/PhonyLou/jira-calc.svg?branch=master)](https://travis-ci.org/PhonyLou/jira-calc)
 
 ## How to use this tool?
 
