@@ -37,16 +37,6 @@ class TimeToolTest {
     }
 
     @Test
-    void test_end_at_Sat() {
-        long start = 1579101032811L;
-        long end =   1579360233100L;
-        Double expect = 1d;
-
-        Double actual = TimeTool.getWorkDay(start, end);
-        Assertions.assertEquals(expect, actual);
-    }
-
-    @Test
     @Description("Test round up, 1.012 -> 1.0 while decimal is 1")
     void roundUp() {
         double input = 1.012;
