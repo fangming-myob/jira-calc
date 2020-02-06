@@ -31,6 +31,8 @@ Update ```release/env/stages.txt``` file to satisfy your team.
 
 ### Get report:
 ```
+cd ./release
+
 ## Start app
 sh 1-startApp.sh
 
