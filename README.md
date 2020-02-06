@@ -16,18 +16,18 @@ Run command ```mvn clean install```, the jar file will be generated and copied t
     ```
     The Jira Token looks like ```Basic cWlsaW...```
 
-    Then copy the token into ```release/.env/token.txt``` with the format like:
+    Then copy the token into ```release/env/token.txt``` with the format like:
     ```
     jira-token: [Paste-Your-Token-Here]
     ```
 
 ### Config JQL
 
-Update ```release/.env/jql.txt``` file to satisfy your team.
+Update ```release/env/jql.txt``` file to satisfy your team.
 
 ### Config Stages(Make sure use the correct stage, you can debug from network in jira to get the exactly value)
 
-Update ```release/.env/stages.txt``` file to satisfy your team.
+Update ```release/env/stages.txt``` file to satisfy your team.
 
 ### Get report:
 ```
@@ -48,7 +48,7 @@ Then you can get the report which named **currentTimestamp**.csv
 Please make sure you have installed JVM before starting the application.
 
 ## How to change the result scope?
-Open ./env/jql.txt and change the filter condition
+Open ```release/env/jql.txt``` and change the filter condition
 
 ### TianZhou
 #### JQL (Juno):
