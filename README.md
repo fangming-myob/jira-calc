@@ -16,18 +16,18 @@ Run command ```mvn clean install```, the jar file will be generated and copied t
     ```
     The Jira Token looks like ```Basic cWlsaW...```
 
-    Then copy the token into ```.env/token.txt``` with the format like:
+    Then copy the token into ```release/.env/token.txt``` with the format like:
     ```
     jira-token: [Paste-Your-Token-Here]
     ```
 
 ### Config JQL
 
-Update ```.env/jql.txt``` file to satisfy your team.
+Update ```release/.env/jql.txt``` file to satisfy your team.
 
 ### Config Stages(Make sure use the correct stage, you can debug from network in jira to get the exactly value)
 
-Update ```.env/stages.txt``` file to satisfy your team.
+Update ```release/.env/stages.txt``` file to satisfy your team.
 
 ### Get report:
 ```
