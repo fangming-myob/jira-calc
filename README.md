@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/PhonyLou/jira-calc.svg?branch=master)](https://travis-ci.org/PhonyLou/jira-calc)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 ## What's this?
 This is a tool to generate Jira Cycle Time report
