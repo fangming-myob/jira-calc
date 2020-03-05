@@ -1,3 +1,5 @@
+# Jira Cycle Time Tool
+
 [![Build Status](https://travis-ci.org/PhonyLou/jira-calc.svg?branch=master)](https://travis-ci.org/PhonyLou/jira-calc)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
@@ -56,45 +58,12 @@ Please make sure you have installed JVM before starting the application.
 ## How to change the result scope?
 Open ```release/env/jql.txt``` and change the filter condition
 
-### TianZhou
-#### JQL (Juno):
+#### JQL Example:
 ```
-jql: project = JUNO AND (assignee in (Liang.Cui, Jingjun.Zhang, Qilin.Lou, Jingtian.Mo, Hongxing.Chen, Yunpeng.Ding) OR assignee was in (Liang.Cui, Jingjun.Zhang, Qilin.Lou, Jingtian.Mo, Hongxing.Chen, Yunpeng.Ding)) AND status changed to done before now() after -30d  ORDER BY priority DESC
+jql: project = Ao-li-gei AND (assignee in (Aotian.Long, Liangchen.ye, TieChui.Zhuge) OR assignee was in (Aotian.Long, Liangchen.ye, TieChui.Zhuge)) AND status changed to done before now() after -30d  ORDER BY priority DESC
 ```
 
-#### Stages (Juno):
+#### Stages:
 ```
 card-stage: Backlog, Analysis, Selected for Development, In-Progress, Showcase, Done
-```
-
-#### JQL (Tianzhou):
-```
-jql: project = tianzhou AND (assignee in (Liang.Cui, Jingjun.Zhang, Qilin.Lou, Jingtian.Mo, Hongxing.Chen, Yunpeng.Ding) OR assignee was in (Liang.Cui, Jingjun.Zhang, Qilin.Lou, Jingtian.Mo, Hongxing.Chen, Yunpeng.Ding)) ORDER BY priority DESC
-```
-
-#### Stages (Tianzhou):
-```
-card-stage: READY FOR DEV, In Progress, Blocked, Showcase, Done
-```
-
-### ShenZhou
-#### JQL:
-```
-jql: (assignee in (Jianing.Zheng, Minghao.Tan, Jie.Chen, Yingjuan.Wang, pei.wang2) OR assignee was in (Jianing.Zheng, Minghao.Tan, Jie.Chen, Yingjuan.Wang, pei.wang2)) AND status changed to Complete before now() after -30d  ORDER BY priority DESC
-```
-
-#### Stages:
-```
-card-stage: Backlog, Ready for Dev, In-Progress, Waiting (other dependancy), Complete
-```
-
-### YiLong
-#### JQL:
-```
-jql: (assignee in (siyu.gou, sebastian.thiel, ke.liu,Hanxian.Lin,nan.li,junli.li,lin.fang) OR assignee was in (sebastian.thiel, ke.liu,Hanxian.Lin,nan.li,junli.li,lin.fang)) ORDER BY priority DESC
-```
-
-#### Stages:
-```
-card-stage: To Do, In Progress, TEST, Ready For Release, Done
 ```
