@@ -85,7 +85,7 @@ public class JiraService {
             result.put(currentActivity.getTo().getDisplayValue(), costHour);
         }
 
-        result.forEach((key, value) -> finalResult.put(key, TimeTool.roundUp(value, 1)));
+        result.forEach((key, value) -> finalResult.put(key.toLowerCase(), TimeTool.roundUp(value, 1)));
 
         return CompletableFuture.completedFuture(finalResult);
     }

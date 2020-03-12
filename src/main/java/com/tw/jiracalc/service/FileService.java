@@ -50,7 +50,7 @@ public class FileService {
     }
 
     private static String getLeadTimes(JiraCard jiraCard, String stageName) {
-        Double stageTime = jiraCard.getFields().getCycleTimeBean().getCycleTime().get(stageName);
+        Double stageTime = jiraCard.getFields().getCycleTimeBean().getCycleTime().get(stageName.toLowerCase());
         String leadHours;
         if (null != stageTime) {
             leadHours = String.valueOf(stageTime);

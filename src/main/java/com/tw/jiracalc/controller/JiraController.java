@@ -24,21 +24,18 @@ public class JiraController {
 
     @GetMapping(value = "/getCardsFile")
     String getCardsFile(@RequestHeader Map<String, String> header) {
-        final String jiraToken = header.get("jira-token");
-        final String jql = header.get("jql");
         final List<String> cardStages = new ArrayList<>(Arrays.asList(header.get("card-stage").split(",")))
                 .stream().map(String::trim).collect(Collectors.toList());
-
-        JiraCards jiraCards = enrichCardDetail(jiraService.getCards(jql, jiraToken), jiraToken);
-        return FileService.generateCycleTimeFile(jiraCards, cardStages);
+        return FileService.generateCycleTimeFile(
+                enrichCardDetail(jiraService.getCards(header.get("jql"), header.get("jira-token")), header.get("jira-token")),
+                cardStages);
     }
 
     private JiraCards enrichCardDetail(final JiraCards jiraCards, final String jiraToken) {
         final Map<String, CompletableFuture<Map<String, Double>>> cycleTimeMap = new HashMap<>();
 
         jiraCards.getIssues().forEach(card -> {
-            final CompletableFuture<Map<String, Double>> futureCycleTime = jiraService.getCycleTime(card.getKey(), jiraToken);
-            cycleTimeMap.put(card.getKey(), futureCycleTime);
+            cycleTimeMap.put(card.getKey(), jiraService.getCycleTime(card.getKey(), jiraToken));
         });
 
         jiraCards.getIssues().forEach(card -> {
