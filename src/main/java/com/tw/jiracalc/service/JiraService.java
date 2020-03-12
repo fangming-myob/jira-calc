@@ -3,6 +3,7 @@ package com.tw.jiracalc.service;
 import com.tw.jiracalc.beans.card.JiraCards;
 import com.tw.jiracalc.beans.history.HistoryDetail;
 import com.tw.jiracalc.beans.history.JiraCardHistory;
+import com.tw.jiracalc.util.CardHelper;
 import com.tw.jiracalc.util.TimeTool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,44 +55,10 @@ public class JiraService {
         HttpEntity<JiraCardHistory> response = restTemplate.exchange(url, HttpMethod.GET, entity, JiraCardHistory.class);
 
         JiraCardHistory jiraCardHistory = response.getBody();
-        Map<String, Double> finalResult = calculateCycleTime(jiraCardHistory);
+        Map<String, Double> finalResult = CardHelper.calculateCycleTime(jiraCardHistory);
 
         return CompletableFuture.completedFuture(finalResult);
     }
 
-    Map<String, Double> calculateCycleTime(JiraCardHistory jiraCardHistory) {
-        Map<String, Double> result = new HashMap<>();
-        Map<String, Double> finalResult = new HashMap<>();
 
-        List<HistoryDetail> activities = jiraCardHistory.getItems().stream()
-                .filter(x -> "status".equals(x.getFieldId()))
-                .collect(Collectors.toList());
-        for (int index = 0; index < activities.size(); index++) {
-            HistoryDetail nextActivity = null;
-            if (index < activities.size() - 1) {
-                nextActivity = activities.get(index + 1);
-            }
-
-            HistoryDetail currentActivity = activities.get(index);
-            Double costHour = result.get(currentActivity.getTo().getDisplayValue());
-
-            if (null == nextActivity) {
-                if (costHour != null) {
-                    costHour += TimeTool.getWorkDay(currentActivity.getTimestamp(), System.currentTimeMillis());
-                } else {
-                    costHour = TimeTool.getWorkDay(currentActivity.getTimestamp(), System.currentTimeMillis());
-                }
-            } else {
-                if (costHour != null) {
-                    costHour += TimeTool.getWorkDay(currentActivity.getTimestamp(), nextActivity.getTimestamp());
-                } else {
-                    costHour = TimeTool.getWorkDay(currentActivity.getTimestamp(), nextActivity.getTimestamp());
-                }
-            }
-            result.put(currentActivity.getTo().getDisplayValue(), costHour);
-        }
-
-        result.forEach((key, value) -> finalResult.put(key.toLowerCase(), TimeTool.roundUp(value, 1)));
-        return finalResult;
-    }
 }

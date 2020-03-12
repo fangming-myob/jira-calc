@@ -5,4 +5,11 @@ import lombok.Data;
 @Data
 public class Status {
     private String displayValue;
+
+    public Status() {
+    }
+
+    public Status(String displayValue) {
+        this.displayValue = displayValue;
+    }
 }
