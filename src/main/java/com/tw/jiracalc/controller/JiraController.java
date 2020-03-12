@@ -4,6 +4,8 @@ import com.tw.jiracalc.beans.card.JiraCards;
 import com.tw.jiracalc.beans.cycletime.CycleTimeBean;
 import com.tw.jiracalc.service.FileService;
 import com.tw.jiracalc.service.JiraService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -21,6 +23,7 @@ public class JiraController {
 
     @Autowired
     JiraService jiraService;
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @GetMapping(value = "/getCardsFile")
     String getCardsFile(@RequestHeader Map<String, String> header) {
@@ -33,10 +36,9 @@ public class JiraController {
 
     private JiraCards enrichCardDetail(final JiraCards jiraCards, final String jiraToken) {
         final Map<String, CompletableFuture<Map<String, Double>>> cycleTimeMap = new HashMap<>();
-
-        jiraCards.getIssues().forEach(card -> {
-            cycleTimeMap.put(card.getKey(), jiraService.getCycleTime(card.getKey(), jiraToken));
-        });
+        logger.info("enrichCardDetail starts");
+        jiraCards.getIssues().forEach(card -> cycleTimeMap.put(card.getKey(), jiraService.getCycleTime(card.getKey(), jiraToken)));
+        logger.info("enrichCardDetail ends");
 
         jiraCards.getIssues().forEach(card -> {
             Map<String, Double> cycleTime = null;
@@ -50,6 +52,7 @@ public class JiraController {
             card.getFields().setCycleTimeBean(cycleTimeBean);
         });
 
+        logger.info("enrichCardDetail returns");
         return jiraCards;
     }
 

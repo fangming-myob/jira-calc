@@ -45,8 +45,6 @@ public class JiraService {
 
     @Async
     public CompletableFuture<Map<String, Double>> getCycleTime(final String jiraId, final String jiraToken) {
-        Map<String, Double> result = new HashMap<>();
-        Map<String, Double> finalResult = new HashMap<>();
         HttpHeaders headers = new HttpHeaders();
         headers.set("Accept", MediaType.APPLICATION_JSON_VALUE);
         headers.set("Authorization", jiraToken);
@@ -56,6 +54,14 @@ public class JiraService {
         HttpEntity<JiraCardHistory> response = restTemplate.exchange(url, HttpMethod.GET, entity, JiraCardHistory.class);
 
         JiraCardHistory jiraCardHistory = response.getBody();
+        Map<String, Double> finalResult = calculateCycleTime(jiraCardHistory);
+
+        return CompletableFuture.completedFuture(finalResult);
+    }
+
+    Map<String, Double> calculateCycleTime(JiraCardHistory jiraCardHistory) {
+        Map<String, Double> result = new HashMap<>();
+        Map<String, Double> finalResult = new HashMap<>();
 
         List<HistoryDetail> activities = jiraCardHistory.getItems().stream()
                 .filter(x -> "status".equals(x.getFieldId()))
@@ -86,7 +92,6 @@ public class JiraService {
         }
 
         result.forEach((key, value) -> finalResult.put(key.toLowerCase(), TimeTool.roundUp(value, 1)));
-
-        return CompletableFuture.completedFuture(finalResult);
+        return finalResult;
     }
 }
