@@ -11,8 +11,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 class CardHelperTest {
 
     @Test
@@ -87,6 +85,8 @@ class CardHelperTest {
         jiraCardHistory.setItems(items);
         Map<String, Double> actualCycleTime = CardHelper.calculateCycleTime(jiraCardHistory);
 
-        Assertions.assertEquals(1d, actualCycleTime.get("to do"));
+        double oneDay = 1;
+        double actually = actualCycleTime.get("to do");
+        Assertions.assertEquals(oneDay, actually);
     }
 }
