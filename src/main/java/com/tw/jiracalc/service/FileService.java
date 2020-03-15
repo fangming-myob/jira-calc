@@ -9,7 +9,7 @@ import java.util.List;
 @Service
 public class FileService {
 
-    public static String generateCycleTimeFile(JiraCards jiraCards, final List<String> cardStages) {
+    public String generateCycleTimeFile(JiraCards jiraCards, final List<String> cardStages) {
 
         final StringBuffer contentBuffer = new StringBuffer();
         final StringBuffer stageHeader = new StringBuffer();

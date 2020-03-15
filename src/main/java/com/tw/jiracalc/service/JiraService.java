@@ -1,6 +1,7 @@
 package com.tw.jiracalc.service;
 
 import com.tw.jiracalc.beans.card.JiraCards;
+import com.tw.jiracalc.beans.cycletime.CycleTimeBean;
 import com.tw.jiracalc.beans.history.HistoryDetail;
 import com.tw.jiracalc.beans.history.JiraCardHistory;
 import com.tw.jiracalc.util.CardHelper;
@@ -20,6 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
 @Service
@@ -61,4 +63,25 @@ public class JiraService {
     }
 
 
+    public JiraCards enrichCardDetail(final JiraCards jiraCards, final String jiraToken) {
+        final Map<String, CompletableFuture<Map<String, Double>>> cycleTimeMap = new HashMap<>();
+        logger.info("enrichCardDetail starts");
+        jiraCards.getIssues().forEach(card -> cycleTimeMap.put(card.getKey(), this.getCycleTime(card.getKey(), jiraToken)));
+        logger.info("enrichCardDetail ends");
+
+        jiraCards.getIssues().forEach(card -> {
+            Map<String, Double> cycleTime = null;
+            try {
+                cycleTime = cycleTimeMap.get(card.getKey()).get();
+            } catch (InterruptedException | ExecutionException e) {
+                e.printStackTrace();
+            }
+            CycleTimeBean cycleTimeBean = new CycleTimeBean();
+            cycleTimeBean.setCycleTime(cycleTime);
+            card.getFields().setCycleTimeBean(cycleTimeBean);
+        });
+
+        logger.info("enrichCardDetail returns");
+        return jiraCards;
+    }
 }

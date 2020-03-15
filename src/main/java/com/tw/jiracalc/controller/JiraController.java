@@ -1,20 +1,17 @@
 package com.tw.jiracalc.controller;
 
-import com.tw.jiracalc.beans.card.JiraCards;
-import com.tw.jiracalc.beans.cycletime.CycleTimeBean;
 import com.tw.jiracalc.service.FileService;
 import com.tw.jiracalc.service.JiraService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.*;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
@@ -23,37 +20,17 @@ public class JiraController {
 
     @Autowired
     JiraService jiraService;
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
+    @Autowired
+    FileService fileService;
 
     @GetMapping(value = "/getCardsFile")
     String getCardsFile(@RequestHeader Map<String, String> header) {
         final List<String> cardStages = new ArrayList<>(Arrays.asList(header.get("card-stage").split(",")))
                 .stream().map(String::trim).collect(Collectors.toList());
-        return FileService.generateCycleTimeFile(
-                enrichCardDetail(jiraService.getCards(header.get("jql"), header.get("jira-token")), header.get("jira-token")),
+
+        return fileService.generateCycleTimeFile(
+                jiraService.enrichCardDetail(jiraService.getCards(header.get("jql"), header.get("jira-token")), header.get("jira-token")),
                 cardStages);
-    }
-
-    private JiraCards enrichCardDetail(final JiraCards jiraCards, final String jiraToken) {
-        final Map<String, CompletableFuture<Map<String, Double>>> cycleTimeMap = new HashMap<>();
-        logger.info("enrichCardDetail starts");
-        jiraCards.getIssues().forEach(card -> cycleTimeMap.put(card.getKey(), jiraService.getCycleTime(card.getKey(), jiraToken)));
-        logger.info("enrichCardDetail ends");
-
-        jiraCards.getIssues().forEach(card -> {
-            Map<String, Double> cycleTime = null;
-            try {
-                cycleTime = cycleTimeMap.get(card.getKey()).get();
-            } catch (InterruptedException | ExecutionException e) {
-                e.printStackTrace();
-            }
-            CycleTimeBean cycleTimeBean = new CycleTimeBean();
-            cycleTimeBean.setCycleTime(cycleTime);
-            card.getFields().setCycleTimeBean(cycleTimeBean);
-        });
-
-        logger.info("enrichCardDetail returns");
-        return jiraCards;
     }
 
 }
