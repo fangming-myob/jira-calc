@@ -27,46 +27,15 @@ import java.util.stream.Collectors;
 @Service
 public class JiraService {
 
-    @Autowired
-    RestTemplate restTemplate;
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    public JiraCards getCards(final String jql, final String jiraToken) {
-        logger.info("JiraService.getCards starts");
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Accept", MediaType.APPLICATION_JSON_VALUE);
-        headers.set("Authorization", jiraToken);
-
-        String url = "https://arlive.atlassian.net/rest/api/2/search?jql=" + jql;
-
-        HttpEntity<?> entity = new HttpEntity<>(headers);
-        HttpEntity<JiraCards> response = restTemplate.exchange(url, HttpMethod.GET, entity, JiraCards.class);
-
-        logger.info("JiraService.getCards will return soon");
-        return response.getBody();
-    }
-
-    @Async
-    public CompletableFuture<Map<String, Double>> getCycleTime(final String jiraId, final String jiraToken) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Accept", MediaType.APPLICATION_JSON_VALUE);
-        headers.set("Authorization", jiraToken);
-
-        String url = "https://arlive.atlassian.net/rest/internal/2/issue/"+jiraId+"/activityfeed";
-        HttpEntity<?> entity = new HttpEntity<>(headers);
-        HttpEntity<JiraCardHistory> response = restTemplate.exchange(url, HttpMethod.GET, entity, JiraCardHistory.class);
-
-        JiraCardHistory jiraCardHistory = response.getBody();
-        Map<String, Double> finalResult = CardHelper.calculateCycleTime(jiraCardHistory);
-
-        return CompletableFuture.completedFuture(finalResult);
-    }
-
+    @Autowired
+    CardHttpService cardHttpService;
 
     public JiraCards enrichCardDetail(final JiraCards jiraCards, final String jiraToken) {
         final Map<String, CompletableFuture<Map<String, Double>>> cycleTimeMap = new HashMap<>();
         logger.info("enrichCardDetail starts");
-        jiraCards.getIssues().forEach(card -> cycleTimeMap.put(card.getKey(), this.getCycleTime(card.getKey(), jiraToken)));
+        jiraCards.getIssues().forEach(card -> cycleTimeMap.put(card.getKey(), cardHttpService.getCycleTime(card.getKey(), jiraToken)));
         logger.info("enrichCardDetail ends");
 
         jiraCards.getIssues().forEach(card -> {

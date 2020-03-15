@@ -1,5 +1,6 @@
 package com.tw.jiracalc.controller;
 
+import com.tw.jiracalc.service.CardHttpService;
 import com.tw.jiracalc.service.FileService;
 import com.tw.jiracalc.service.JiraService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,13 +24,16 @@ public class JiraController {
     @Autowired
     FileService fileService;
 
+    @Autowired
+    CardHttpService cardHttpService;
+
     @GetMapping(value = "/getCardsFile")
     String getCardsFile(@RequestHeader Map<String, String> header) {
         final List<String> cardStages = new ArrayList<>(Arrays.asList(header.get("card-stage").split(",")))
                 .stream().map(String::trim).collect(Collectors.toList());
 
         return fileService.generateCycleTimeFile(
-                jiraService.enrichCardDetail(jiraService.getCards(header.get("jql"), header.get("jira-token")), header.get("jira-token")),
+                jiraService.enrichCardDetail(cardHttpService.getCards(header.get("jql"), header.get("jira-token")), header.get("jira-token")),
                 cardStages);
     }
 

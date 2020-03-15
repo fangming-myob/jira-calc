@@ -2,6 +2,7 @@ package com.tw.jiracalc.controller;
 
 import com.tw.jiracalc.beans.card.JiraCard;
 import com.tw.jiracalc.beans.card.JiraCards;
+import com.tw.jiracalc.service.CardHttpService;
 import com.tw.jiracalc.service.FileService;
 import com.tw.jiracalc.service.JiraService;
 import org.junit.jupiter.api.Test;
@@ -36,12 +37,14 @@ class JiraControllerTest {
     JiraService jiraService;
     @MockBean
     FileService fileService;
+    @MockBean
+    CardHttpService cardHttpService;
 
     @Test
     void return_string_when_normal() throws Exception {
         final String expect = "Mock Result";
 
-        when(jiraService.getCards(any(), any())).thenReturn(new JiraCards());
+        when(cardHttpService.getCards(any(), any())).thenReturn(new JiraCards());
         when(jiraService.enrichCardDetail(any(), any())).thenReturn(new JiraCards());
         when(fileService.generateCycleTimeFile(any(), any())).thenReturn("Mock Result");
 
