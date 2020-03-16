@@ -3,7 +3,6 @@ package com.tw.jiracalc.service;
 import com.tw.jiracalc.model.card.JiraCards;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -13,7 +12,6 @@ import org.springframework.web.client.RestTemplate;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-@SpringBootTest
 class CardHttpServiceTest {
     @Test
     void CardHttpService_getCards_health_check() {
