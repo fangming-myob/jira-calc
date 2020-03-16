@@ -6,10 +6,7 @@ import com.tw.jiracalc.util.CardHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
+import org.springframework.http.*;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -20,14 +17,18 @@ import java.util.concurrent.CompletableFuture;
 @Service
 public class CardHttpService {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
-    @Autowired
-    RestTemplate restTemplate;
+    private final RestTemplate restTemplate;
 
-    public JiraCards getCards(final String jql, final String jiraToken) {
+    @Autowired
+    public CardHttpService(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
+    }
+
+    public JiraCards getCards(final String jql, final String jiraApiToken) {
         logger.info("JiraService.getCards starts");
         HttpHeaders headers = new HttpHeaders();
         headers.set("Accept", MediaType.APPLICATION_JSON_VALUE);
-        headers.set("Authorization", jiraToken);
+        headers.set("Authorization", jiraApiToken);
 
         String url = "https://arlive.atlassian.net/rest/api/2/search?jql=" + jql;
 
