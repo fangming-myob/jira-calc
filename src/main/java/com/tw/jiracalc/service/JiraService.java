@@ -17,8 +17,12 @@ public class JiraService {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
+    private final CardHttpService cardHttpService;
+
     @Autowired
-    CardHttpService cardHttpService;
+    public JiraService(CardHttpService cardHttpService) {
+        this.cardHttpService = cardHttpService;
+    }
 
     public JiraCards getCards(final String jql, final String jiraApiToken) {
         logger.info("enrichCardDetail starts");

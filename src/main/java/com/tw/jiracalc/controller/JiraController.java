@@ -18,10 +18,14 @@ import java.util.stream.Collectors;
 @RequestMapping("/jira")
 public class JiraController {
 
+    private final JiraService jiraService;
+    private final FileService fileService;
+
     @Autowired
-    JiraService jiraService;
-    @Autowired
-    FileService fileService;
+    public JiraController(JiraService jiraService, FileService fileService) {
+        this.jiraService = jiraService;
+        this.fileService = fileService;
+    }
 
     @GetMapping(value = "/getCardsFile")
     String getCardsFile(@RequestHeader Map<String, String> header) {
