@@ -1,7 +1,7 @@
 package com.tw.jiracalc.service;
 
-import com.tw.jiracalc.beans.card.JiraCards;
-import com.tw.jiracalc.beans.cycletime.CycleTimeBean;
+import com.tw.jiracalc.model.card.JiraCards;
+import com.tw.jiracalc.model.cycletime.CycleTimeBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,19 +24,19 @@ public class JiraService {
         logger.info("enrichCardDetail starts");
         final Map<String, CompletableFuture<Map<String, Double>>> cycleTimeMap = new HashMap<>();
         final JiraCards jiraCards = cardHttpService.getCards(jql, jiraApiToken);
-        jiraCards.getIssues().forEach(card -> cycleTimeMap.put(card.getKey(), cardHttpService.getCycleTime(card.getKey(), jiraApiToken)));
+        jiraCards.issues.forEach(card -> cycleTimeMap.put(card.key, cardHttpService.getCycleTime(card.key, jiraApiToken)));
         logger.info("enrichCardDetail ends");
 
-        jiraCards.getIssues().forEach(card -> {
+        jiraCards.issues.forEach(card -> {
             Map<String, Double> cycleTime = null;
             try {
-                cycleTime = cycleTimeMap.get(card.getKey()).get();
+                cycleTime = cycleTimeMap.get(card.key).get();
             } catch (InterruptedException | ExecutionException e) {
                 e.printStackTrace();
             }
             CycleTimeBean cycleTimeBean = new CycleTimeBean();
-            cycleTimeBean.setCycleTime(cycleTime);
-            card.getFields().setCycleTimeBean(cycleTimeBean);
+            cycleTimeBean.cycleTime = cycleTime;
+            card.fields.cycleTimeBean = cycleTimeBean;
         });
 
         logger.info("enrichCardDetail returns");

@@ -1,6 +1,6 @@
 package com.tw.jiracalc.controller;
 
-import com.tw.jiracalc.beans.card.JiraCards;
+import com.tw.jiracalc.model.card.JiraCards;
 import com.tw.jiracalc.service.CardHttpService;
 import com.tw.jiracalc.service.FileService;
 import com.tw.jiracalc.service.JiraService;

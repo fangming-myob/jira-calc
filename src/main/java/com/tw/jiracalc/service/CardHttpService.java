@@ -1,7 +1,7 @@
 package com.tw.jiracalc.service;
 
-import com.tw.jiracalc.beans.card.JiraCards;
-import com.tw.jiracalc.beans.history.JiraCardHistory;
+import com.tw.jiracalc.model.card.JiraCards;
+import com.tw.jiracalc.model.history.JiraCardHistory;
 import com.tw.jiracalc.util.CardHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

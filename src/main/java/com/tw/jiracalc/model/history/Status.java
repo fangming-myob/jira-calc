@@ -1,12 +1,10 @@
-package com.tw.jiracalc.beans.history;
+package com.tw.jiracalc.model.history;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class Status {
-    private String displayValue;
+    public String displayValue;
 }

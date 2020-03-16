@@ -1,13 +1,10 @@
-package com.tw.jiracalc.beans.history;
+package com.tw.jiracalc.model.history;
 
-import lombok.Data;
-
-@Data
 public class HistoryDetail {
-    private String fieldId;
-    private Long timestamp;
-    private Status from;
-    private Status to;
+    public String fieldId;
+    public Long timestamp;
+    public Status from;
+    public Status to;
 
     @Override
     public String toString() {
