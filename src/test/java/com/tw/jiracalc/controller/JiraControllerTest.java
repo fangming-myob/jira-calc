@@ -39,7 +39,7 @@ class JiraControllerTest {
         final String expect = "Mock Result";
 
         when(cardHttpService.getCards(any(), any())).thenReturn(new JiraCards());
-        when(jiraService.enrichCardDetail(any(), any())).thenReturn(new JiraCards());
+        when(jiraService.getCards(any(), any())).thenReturn(new JiraCards());
         when(fileService.generateCycleTimeFile(any(), any())).thenReturn("Mock Result");
 
         MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();

@@ -25,12 +25,12 @@ public class JiraController {
 
     @GetMapping(value = "/getCardsFile")
     String getCardsFile(@RequestHeader Map<String, String> header) {
-        final List<String> cardStages = new ArrayList<>(Arrays.asList(header.get("card-stage").split(",")))
+        final List<String> displayStages = new ArrayList<>(Arrays.asList(header.get("card-stage").split(",")))
                 .stream().map(String::trim).collect(Collectors.toList());
 
         return fileService.generateCycleTimeFile(
-                jiraService.enrichCardDetail(header.get("jql"), header.get("jira-token")),
-                cardStages);
+                jiraService.getCards(header.get("jql"), header.get("jira-token")),
+                displayStages);
     }
 
 }

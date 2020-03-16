@@ -9,11 +9,11 @@ import java.util.List;
 @Service
 public class FileService {
 
-    public String generateCycleTimeFile(JiraCards jiraCards, final List<String> cardStages) {
+    public String generateCycleTimeFile(JiraCards jiraCards, final List<String> displayStages) {
 
         final StringBuffer contentBuffer = new StringBuffer();
         final StringBuffer stageHeader = new StringBuffer();
-        cardStages.forEach(stage -> stageHeader.append(",").append(stage));
+        displayStages.forEach(stage -> stageHeader.append(",").append(stage));
         final String tableHeader = "jiraId,Issue Type,Status,Summary,Priority,Assignee,Reporter" + stageHeader.toString();
         contentBuffer.append(tableHeader);
         contentBuffer.append("\r\n");
@@ -39,7 +39,7 @@ public class FileService {
 
             contentBuffer
                     .append(jiraCard.getFields().getReporter().getDisplayName());
-            cardStages.forEach(stage -> {
+            displayStages.forEach(stage -> {
                 final String stageCostStr = getLeadTimes(jiraCard, stage);
                 contentBuffer.append(",").append(stageCostStr);
             });

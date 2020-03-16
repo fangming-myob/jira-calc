@@ -20,7 +20,7 @@ public class JiraService {
     @Autowired
     CardHttpService cardHttpService;
 
-    public JiraCards enrichCardDetail(final String jql, final String jiraApiToken) {
+    public JiraCards getCards(final String jql, final String jiraApiToken) {
         logger.info("enrichCardDetail starts");
         final Map<String, CompletableFuture<Map<String, Double>>> cycleTimeMap = new HashMap<>();
         final JiraCards jiraCards = cardHttpService.getCards(jql, jiraApiToken);
