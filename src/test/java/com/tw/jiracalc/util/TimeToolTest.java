@@ -12,7 +12,7 @@ class TimeToolTest {
         long end = 1579187432000L;
         Double expect = 1d;
 
-        Double actual = TimeTool.getWorkDay(start, end);
+        Double actual = TimeTool.calculateWorkDay(start, end);
         Assertions.assertEquals(expect, actual);
     }
 
@@ -22,7 +22,7 @@ class TimeToolTest {
         long end = 1579144232000L;
         Double expect = 0.5d;
 
-        Double actual = TimeTool.getWorkDay(start, end);
+        Double actual = TimeTool.calculateWorkDay(start, end);
         Assertions.assertEquals(expect, actual);
     }
 
@@ -32,7 +32,7 @@ class TimeToolTest {
         long end = 1579533033000L;
         Double expect = 3d;
 
-        Double actual = TimeTool.getWorkDay(start, end);
+        Double actual = TimeTool.calculateWorkDay(start, end);
         Assertions.assertEquals(expect, actual);
     }
 

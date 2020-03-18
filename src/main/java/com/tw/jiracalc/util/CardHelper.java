@@ -28,15 +28,15 @@ public class CardHelper {
 
             if (null == nextStatusActivity) {
                 if (costHour != null) {
-                    costHour += TimeTool.getWorkDay(currentActivity.timestamp, System.currentTimeMillis());
+                    costHour += TimeTool.calculateWorkDay(currentActivity.timestamp, System.currentTimeMillis());
                 } else {
-                    costHour = TimeTool.getWorkDay(currentActivity.timestamp, System.currentTimeMillis());
+                    costHour = TimeTool.calculateWorkDay(currentActivity.timestamp, System.currentTimeMillis());
                 }
             } else {
                 if (costHour != null) {
-                    costHour += TimeTool.getWorkDay(currentActivity.timestamp, nextStatusActivity.timestamp);
+                    costHour += TimeTool.calculateWorkDay(currentActivity.timestamp, nextStatusActivity.timestamp);
                 } else {
-                    costHour = TimeTool.getWorkDay(currentActivity.timestamp, nextStatusActivity.timestamp);
+                    costHour = TimeTool.calculateWorkDay(currentActivity.timestamp, nextStatusActivity.timestamp);
                 }
             }
             result.put(currentActivity.to.displayValue, costHour);

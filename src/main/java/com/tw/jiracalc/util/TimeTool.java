@@ -5,13 +5,14 @@ import java.math.RoundingMode;
 import java.util.Calendar;
 
 public class TimeTool {
-    public static double getWorkDay(final long startMillis, final long endMillis) {
+    public static double calculateWorkDay(final long startMillis, final long endMillis) {
+        // 开始时间timestamp 结束时间timestamp
         Calendar start = Calendar.getInstance();
         start.setTimeInMillis(startMillis);
         Calendar end = Calendar.getInstance();
         end.setTimeInMillis(endMillis);
 
-        long day = 86400000;
+        long day = 86400 * 1000;
         double dayGap = (double) (endMillis - startMillis) / day;
 
         if (dayGap < 1) {
