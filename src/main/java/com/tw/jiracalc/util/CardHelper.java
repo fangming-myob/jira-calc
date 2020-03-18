@@ -14,19 +14,19 @@ public class CardHelper {
         Map<String, Double> result = new HashMap<>();
         Map<String, Double> finalResult = new HashMap<>();
 
-        List<HistoryDetail> activities = jiraCardHistory.items.stream()
+        List<HistoryDetail> statusActivities = jiraCardHistory.items.stream()
                 .filter(activity -> "status".equals(activity.fieldId))
                 .collect(Collectors.toList());
-        for (int index = 0; index < activities.size(); index++) {
-            HistoryDetail nextActivity = null;
-            if (index < activities.size() - 1) {
-                nextActivity = activities.get(index + 1);
+        for (int index = 0; index < statusActivities.size(); index++) {
+            HistoryDetail nextStatusActivity = null;
+            if (index < statusActivities.size() - 1) {
+                nextStatusActivity = statusActivities.get(index + 1);
             }
 
-            HistoryDetail currentActivity = activities.get(index);
+            HistoryDetail currentActivity = statusActivities.get(index);
             Double costHour = result.get(currentActivity.to.displayValue);
 
-            if (null == nextActivity) {
+            if (null == nextStatusActivity) {
                 if (costHour != null) {
                     costHour += TimeTool.getWorkDay(currentActivity.timestamp, System.currentTimeMillis());
                 } else {
@@ -34,9 +34,9 @@ public class CardHelper {
                 }
             } else {
                 if (costHour != null) {
-                    costHour += TimeTool.getWorkDay(currentActivity.timestamp, nextActivity.timestamp);
+                    costHour += TimeTool.getWorkDay(currentActivity.timestamp, nextStatusActivity.timestamp);
                 } else {
-                    costHour = TimeTool.getWorkDay(currentActivity.timestamp, nextActivity.timestamp);
+                    costHour = TimeTool.getWorkDay(currentActivity.timestamp, nextStatusActivity.timestamp);
                 }
             }
             result.put(currentActivity.to.displayValue, costHour);
