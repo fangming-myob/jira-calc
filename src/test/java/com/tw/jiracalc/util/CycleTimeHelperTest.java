@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-class CardHelperTest {
+class CycleTimeHelperTest {
 
     @Test
     void size_should_be_0_when_no_status() {
@@ -21,7 +21,7 @@ class CardHelperTest {
         historyDetail.fieldId = "description";
         items.add(historyDetail);
         jiraCardHistory.items = items;
-        Map<String, Double> actualCycleTime = CardHelper.calculateCycleTime(jiraCardHistory);
+        Map<String, Double> actualCycleTime = CycleTimeHelper.calculateCycleTime(jiraCardHistory);
 
         Assertions.assertEquals(0, actualCycleTime.size());
     }
@@ -37,7 +37,7 @@ class CardHelperTest {
         historyDetail.timestamp = 1579101032811L;
         items.add(historyDetail);
         jiraCardHistory.items = items;
-        Map<String, Double> actualCycleTime = CardHelper.calculateCycleTime(jiraCardHistory);
+        Map<String, Double> actualCycleTime = CycleTimeHelper.calculateCycleTime(jiraCardHistory);
 
         Assertions.assertEquals(1, actualCycleTime.size());
     }
@@ -59,7 +59,7 @@ class CardHelperTest {
         secondItem.timestamp = 1579187432000L;
         items.add(secondItem);
         jiraCardHistory.items = items;
-        Map<String, Double> actualCycleTime = CardHelper.calculateCycleTime(jiraCardHistory);
+        Map<String, Double> actualCycleTime = CycleTimeHelper.calculateCycleTime(jiraCardHistory);
 
         Assertions.assertEquals(2, actualCycleTime.size());
     }
@@ -81,7 +81,7 @@ class CardHelperTest {
         secondItem.timestamp = 1579187432000L;
         items.add(secondItem);
         jiraCardHistory.items = items;
-        Map<String, Double> actualCycleTime = CardHelper.calculateCycleTime(jiraCardHistory);
+        Map<String, Double> actualCycleTime = CycleTimeHelper.calculateCycleTime(jiraCardHistory);
 
         double oneDay = 1;
         double actually = actualCycleTime.get("to do");

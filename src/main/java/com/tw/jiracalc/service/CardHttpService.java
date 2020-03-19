@@ -2,7 +2,7 @@ package com.tw.jiracalc.service;
 
 import com.tw.jiracalc.model.card.JiraCards;
 import com.tw.jiracalc.model.history.JiraCardHistory;
-import com.tw.jiracalc.util.CardHelper;
+import com.tw.jiracalc.util.CycleTimeHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,7 +50,7 @@ public class CardHttpService {
         HttpEntity<JiraCardHistory> response = restTemplate.exchange(url, HttpMethod.GET, entity, JiraCardHistory.class);
 
         JiraCardHistory jiraCardHistory = response.getBody();
-        Map<String, Double> finalResult = CardHelper.calculateCycleTime(jiraCardHistory);
+        Map<String, Double> finalResult = CycleTimeHelper.calculateCycleTime(jiraCardHistory);
 
         return CompletableFuture.completedFuture(finalResult);
     }

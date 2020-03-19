@@ -2,59 +2,87 @@ package com.tw.jiracalc.util;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.springframework.context.annotation.Description;
 
 class TimeToolTest {
-
     @Test
-    void getWorkDay() {
-        long start = 1579101032811L;
-        long end = 1579187432000L;
-        Double expect = 1d;
-
-        Double actual = TimeTool.calculateWorkDay(start, end);
-        Assertions.assertEquals(expect, actual);
+    void return_1_day_when_give_1_days_millis() {
+        long input = 86400000;
+        double actual = TimeTool.millis2Day(input);
+        Assertions.assertEquals(1, actual);
     }
 
     @Test
-    void test_half_day() {
-        long start = 1579101032811L;
-        long end = 1579144232000L;
-        Double expect = 0.5d;
-
-        Double actual = TimeTool.calculateWorkDay(start, end);
-        Assertions.assertEquals(expect, actual);
+    void return_half_day_when_give_half_days_millis() {
+        long input = 43200000;
+        double actual = TimeTool.millis2Day(input);
+        Assertions.assertEquals(0.5, actual);
     }
 
     @Test
-    void test_cross_one_weekend() {
-        long start = 1579101032811L;
-        long end = 1579533033000L;
-        Double expect = 3d;
-
-        Double actual = TimeTool.calculateWorkDay(start, end);
-        Assertions.assertEquals(expect, actual);
+    void return_0_4_6_day_when_give_less_half_days_millis() {
+        long input = 40000000;
+        double actual = TimeTool.millis2Day(input);
+        Assertions.assertEquals(0.46, actual);
     }
 
     @Test
-    @Description("Test round up, 1.012 -> 1.0 while decimal is 1")
-    void roundUp() {
-        double input = 1.012;
-        double expect = 1.0;
-        int decimal = 1;
-
-        double actual = TimeTool.roundUp(input, decimal);
-        Assertions.assertEquals(expect, actual);
+    void return_0_47_day_when_give_roundup() {
+        long input = 40200000;
+        double actual = TimeTool.millis2Day(input);
+        Assertions.assertEquals(0.47, actual);
     }
 
     @Test
-    @Description("Test round up, 1.55 -> 1.6 while decimal is 1")
-    void roundUp2() {
-        double input = 1.55;
-        double expect = 1.6;
-        int decimal = 1;
+    void return_2_days_when_give_2_days_millis() {
+        long input = 86400000 * 2;
+        double actual = TimeTool.millis2Day(input);
+        Assertions.assertEquals(2, actual);
+    }
 
-        double actual = TimeTool.roundUp(input, decimal);
-        Assertions.assertEquals(expect, actual);
+    @Test
+    void return_1_5_day_when_give_1_5_days_millis() {
+        long input = 129600000;
+        double actual = TimeTool.millis2Day(input);
+        Assertions.assertEquals(1.5, actual);
+    }
+
+    @Test
+    void return_1_5_day_when_give_more_than_1_5_days_millis() {
+        long input = 129800000;
+        double actual = TimeTool.millis2Day(input);
+        Assertions.assertEquals(1.5, actual);
+    }
+
+    @Test
+    void return_more_than_1_5_7_day_when_give_more_than_1_5_7() {
+        long input = 135900000;
+        double actual = TimeTool.millis2Day(input);
+        Assertions.assertEquals(1.57, actual);
+    }
+
+    @Test
+    void return_1_5_7_days_when_roundup() {
+        long input = 135500000;
+        double actual = TimeTool.millis2Day(input);
+        Assertions.assertEquals(1.57, actual);
+    }
+
+    @Test
+    void return_0_working_day() {
+        long start = 1583985258515L;
+        long end = 1583985282880L;
+        double actual = TimeTool.calculateWorkingDay(start, end);
+
+        Assertions.assertEquals(0, actual);
+    }
+
+    @Test
+    void return_1_2_1_working_day() {
+
+        long start = 1583985282880L;
+        long end = 1584090137883L;
+        double actual = TimeTool.calculateWorkingDay(start, end);
+
+        Assertions.assertEquals(1.21, actual);
     }
 }

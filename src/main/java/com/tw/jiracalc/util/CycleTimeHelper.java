@@ -8,11 +8,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class CardHelper {
+public class CycleTimeHelper {
 
     public static Map<String, Double> calculateCycleTime(JiraCardHistory jiraCardHistory) {
         Map<String, Double> result = new HashMap<>();
-        Map<String, Double> finalResult = new HashMap<>();
 
         List<HistoryDetail> statusActivities = jiraCardHistory.items.stream()
                 .filter(activity -> "status".equals(activity.fieldId))
@@ -24,25 +23,24 @@ public class CardHelper {
             }
 
             HistoryDetail currentActivity = statusActivities.get(index);
-            Double costHour = result.get(currentActivity.to.displayValue);
+            Double costDays = result.get(currentActivity.to.displayValue.toLowerCase());
 
             if (null == nextStatusActivity) {
-                if (costHour != null) {
-                    costHour += TimeTool.calculateWorkDay(currentActivity.timestamp, System.currentTimeMillis());
+                if (costDays != null) {
+                    costDays += TimeTool.calculateWorkingDay(currentActivity.timestamp, System.currentTimeMillis());
                 } else {
-                    costHour = TimeTool.calculateWorkDay(currentActivity.timestamp, System.currentTimeMillis());
+                    costDays = TimeTool.calculateWorkingDay(currentActivity.timestamp, System.currentTimeMillis());
                 }
             } else {
-                if (costHour != null) {
-                    costHour += TimeTool.calculateWorkDay(currentActivity.timestamp, nextStatusActivity.timestamp);
+                if (costDays != null) {
+                    costDays += TimeTool.calculateWorkingDay(currentActivity.timestamp, nextStatusActivity.timestamp);
                 } else {
-                    costHour = TimeTool.calculateWorkDay(currentActivity.timestamp, nextStatusActivity.timestamp);
+                    costDays = TimeTool.calculateWorkingDay(currentActivity.timestamp, nextStatusActivity.timestamp);
                 }
             }
-            result.put(currentActivity.to.displayValue, costHour);
+            result.put(currentActivity.to.displayValue.toLowerCase(), costDays);
         }
 
-        result.forEach((key, value) -> finalResult.put(key.toLowerCase(), TimeTool.roundUp(value, 1)));
-        return finalResult;
+        return result;
     }
 }
